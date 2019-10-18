@@ -93,6 +93,8 @@ const setName = (req, res) => {
   savePromise.catch((err) => {
     res.json({ err });
   });
+
+  return res;
 };
 
 const searchName = (req, res) => {
