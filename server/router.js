@@ -15,7 +15,7 @@ const router = (app) => {
 
   app.post('/setCatName', controllers.setCatName);
 
-  app.post('/updateLastCat', controllers.updateLastCat);
+  app.post('/updateLast', controllers.updateLast);
 
   app.post('/setDogName', controllers.setDogName);
 };

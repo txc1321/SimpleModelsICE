@@ -106,7 +106,7 @@ const setCatName = (req, res) => {
   const name = `${req.body.firstname} ${req.body.lastname}`;
   const catData = {
     name,
-    bedsOwned: readAllCats.body.beds,
+    bedsOwned: req.body.beds,
   };
 
   const newCat = new Cat(catData);
@@ -137,8 +137,8 @@ const setDogName = (req, res) => {
   const name = `${req.body.firstname} ${req.body.lastname}`;
   const dogData = {
     name,
-    breed: readAllDogs.body.breed,
-    age: readAllDogs.body.age,
+    breed: req.body.breed,
+    age: req.body.age,
   };
 
   const newDog = new Dog(dogData);
@@ -208,12 +208,11 @@ const searchDogName = (req, res) => {
     const savePromise = newDog.save();
 
     savePromise.then(() => {
-      lastAdded = newDog;
 
       res.json({
-        name: lastAdded.name,
-        breed: lastAdded.breed,
-        age: lastAdded.age,
+        name: newDog.name,
+        breed: newDog.breed,
+        age: newDog.age,
       });
     });
 
@@ -225,21 +224,42 @@ const searchDogName = (req, res) => {
   });
 };
 
-const updateLastCat = (req, res) => {
-  lastAdded.bedsOwned++;
+const updateLast = (req, res) => {
+  if (lastAdded.bedsOwned) {
+    lastAdded.bedsOwned++;
+
+    const savePromise = lastAdded.save();
+
+    savePromise.then(() => {
+      res.json({
+        name: lastAdded.name,
+        beds: lastAdded.bedsOwned,
+      });
+    });
+
+    savePromise.catch((err) => {
+      res.json({ err });
+    });
+
+    return res;
+  }
+  lastAdded.age++;
 
   const savePromise = lastAdded.save();
 
   savePromise.then(() => {
     res.json({
       name: lastAdded.name,
-      beds: lastAdded.bedsOwned,
+      breed: lastAdded.breed,
+      age: lastAdded.age,
     });
   });
 
   savePromise.catch((err) => {
     res.json({ err });
   });
+
+  return res;
 };
 
 const notFound = (req, res) => {
@@ -260,7 +280,7 @@ module.exports = {
   getName,
   setCatName,
   setDogName,
-  updateLastCat,
+  updateLast,
   searchCatName,
   searchDogName,
   notFound,

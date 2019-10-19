@@ -7,7 +7,6 @@ const CatSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-
   },
   bedsOwned: {
     type: Number,
