@@ -200,10 +200,8 @@ const searchDogName = (req, res) => {
     const newDog = new Dog({
       name: doc.name,
       breed: doc.breed,
-      age: doc.age,
+      age: doc.age + 1,
     });
-
-    newDog.age++;
 
     const savePromise = newDog.save();
 
